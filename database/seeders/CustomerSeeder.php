@@ -17,17 +17,17 @@ class CustomerSeeder extends Seeder
 
 
         Customer::factory()
-            ->count(100)
-            ->hasInvoices(5)
+            ->count(10)
+            ->hasInvoices(50)
             ->create();
 
-        Customer::factory()
-            ->count(100)
-            ->hasInvoices(3)
-            ->create();
+        // Customer::factory()
+        //     ->count(100)
+        //     ->hasInvoices(3)
+        //     ->create();
 
-        Customer::factory()
-            ->count(25)
-            ->create();
+        // Customer::factory()
+        //     ->count(25)
+        //     ->create();
     }
 }

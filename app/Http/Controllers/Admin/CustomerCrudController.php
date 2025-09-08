@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\CustomerRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\DB;
+
 
 /**
  * Class CustomerCrudController
@@ -59,9 +61,9 @@ class CustomerCrudController extends CrudController
         ]);
         $this->crud->addColumn(['name' => 'email', 'type' => 'email']);
         $this->crud->addColumn(['name' => 'address', 'type' => 'text']);
-        $this->crud->addColumn(['name' => 'city', 'type' => 'text']);
-        $this->crud->addColumn(['name' => 'state', 'type' => 'text']);
-        $this->crud->addColumn(['name' => 'postal_code', 'type' => 'text', 'label' => 'Postal Code']);
+        // $this->crud->addColumn(['name' => 'city', 'type' => 'text']);
+        // $this->crud->addColumn(['name' => 'state', 'type' => 'text']);
+        // $this->crud->addColumn(['name' => 'postal_code', 'type' => 'text', 'label' => 'Postal Code']);
         $this->crud->addColumn([
             'name' => 'invoices',
             'type' => 'relationship_count',
@@ -106,5 +108,46 @@ class CustomerCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+    protected function setupShowOperation()
+    {
+        DB::enableQueryLog(); // start logging queries
+
+        // Basic customer info
+        $this->crud->addColumn(['name' => 'id', 'type' => 'number']);
+        $this->crud->addColumn(['name' => 'name', 'type' => 'text']);
+        $this->crud->addColumn(['name' => 'email', 'type' => 'email']);
+        $this->crud->addColumn([
+            'name' => 'type',
+            'type' => 'select_from_array',
+            'options' => [
+                'B' => 'Business',
+                'P' => 'Personal',
+                'I' => 'Individual',
+            ]
+        ]);
+        $this->crud->addColumn(['name' => 'address', 'type' => 'text']);
+        $this->crud->addColumn(['name' => 'city', 'type' => 'text']);
+        $this->crud->addColumn(['name' => 'state', 'type' => 'text']);
+        $this->crud->addColumn(['name' => 'postal_code', 'type' => 'text']);
+
+
+        // Show invoices in preview
+        $this->crud->addColumn([
+            'name' => 'invoices',
+            'type' => 'relationship',
+            'label' => 'Invoices',
+            'entity' => 'invoices', // method in Customer model
+            'attribute' => 'id',       // what to show (id, date, amount)
+            'model' => \App\Models\Invoice::class,
+            'ajax' => true,
+        ]);
+        $queries = DB::getQueryLog();
+        $totalTime = collect($queries)->sum('time');
+         dump($queries, $totalTime);
+
+        // log or debug
+        // \Log::info('Customer show queries', $queries);
+        // \Log::info('Total time (ms): ' . $totalTime);
     }
 }
