@@ -12,6 +12,11 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::group(['prefix' => 'v1', 'namespace' => '\App\Http\Controllers\Api\V1'], function () {
+    Route::post('/register', [\App\Http\Controllers\Api\V1\AuthController::class, 'register']);
+});
+
+
+Route::group(['prefix' => 'v1', 'namespace' => '\App\Http\Controllers\Api\V1'], function () {
     Route::apiResource('customers', CustomerController::class);
     Route::apiResource('invoices', InvoiceController::class);
     Route::get('/report/{type}', [ReportController::class, 'show']);
