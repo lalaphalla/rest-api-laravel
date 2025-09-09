@@ -4,12 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\ReportService;
 use Illuminate\Http\Request;
-namespace App\Enums;
-enum ReportFormat: string
-{
-    case CSV = 'report.csv';
-    case JSON = 'report.json';
-}
 
 class ReportController extends Controller
 {
@@ -27,19 +21,15 @@ class ReportController extends Controller
     //     return response()->json(["report" => $report]);
     // }
 
-
-
-
-
     public function show(Request $request, $type)
     {
-        $format = $request->query("format", "csv");
-        ReportFormat $reportFormat = "report.{$format}";
+        $format = $request->query("format", "json");
+        $reportFormat = "report.{$format}";
 
-        $service = app(abstract: reportFormat);
+        $service = app(abstract: "report.{$format}");
 
         $report = $service->generate($type);
-        dd($report);
+
 
         return response($report);
 
