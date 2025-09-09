@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-class ReportService
+use App\Contracts\ReportInterface;
+
+class ReportService implements ReportInterface
 {
     public function generate(string $type): string
     {
