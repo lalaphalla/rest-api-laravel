@@ -71,6 +71,7 @@ return [
 
         'log' => [
             'driver' => 'log',
+            'level' => 'debug',
         ],
 
         'null' => [

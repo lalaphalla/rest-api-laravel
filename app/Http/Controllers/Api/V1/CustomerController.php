@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\MessageSent;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Resources\V1\CustomerCollection;
@@ -112,6 +113,8 @@ class CustomerController extends Controller
     {
         $includeInvoices = request()->query('includeInvoices');
         // dd($includeInvoices);
+
+        broadcast(new MessageSent($customer->name, $customer->state));
         if ($includeInvoices) {
             return new CustomerResource($customer->loadMissing(('invoices')));
         }
