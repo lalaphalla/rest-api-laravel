@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class KhAddressTableSeeder extends Seeder
 {
-   /**
+    /**
      * Run the database seeds.
      *
      * php artisan db:seed --class=KhAddressTableSeeder
