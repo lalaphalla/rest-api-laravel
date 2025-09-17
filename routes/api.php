@@ -15,20 +15,23 @@ Route::group(['prefix' => 'v1', 'namespace' => '\App\Http\Controllers\Api\V1'], 
     Route::post('/register', [\App\Http\Controllers\Api\V1\AuthController::class, 'register']);
 });
 
-
 Route::group(['prefix' => 'v1', 'namespace' => '\App\Http\Controllers\Api\V1'], function () {
     Route::apiResource('customers', CustomerController::class);
     Route::apiResource('invoices', InvoiceController::class);
+
+    // Route::post('/invoice/bulk', ['uses' => 'InvoiceController@bulkStore']);
+    Route::post('/invoices/bulk', [InvoiceController::class, 'bulkStore']);
+
     Route::get('/report/{type}', [ReportController::class, 'show']);
 
     Route::get('/send-message', function () {
         Telegram::sendMessage([
-            "chat_id" => "648000103",
-            "text" => "From Larvel 12.x"
+            'chat_id' => '648000103',
+            'text' => 'From Larvel 12.x',
         ]);
+
         return 'Message Send!';
     });
-
 
     Route::get('/set-webhook', function () {
         $url = 'https://579ec8a4da7f.ngrok-free.app/api/webhook'; // Your ngrok URL
@@ -36,7 +39,6 @@ Route::group(['prefix' => 'v1', 'namespace' => '\App\Http\Controllers\Api\V1'], 
 
         return $response;
     });
-
 
 });
 
@@ -48,7 +50,6 @@ Route::post('/webhook', function () {
 
     Telegram::sendMessage([
         'chat_id' => $user->getId(),
-        'text' => "{$user->getFirstName()} said: $text"
+        'text' => "{$user->getFirstName()} said: $text",
     ]);
 });
-
